@@ -215,32 +215,12 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
         overflow: 'hidden',
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          padding: '12px 14px',
-          borderBottom: `1px solid ${theme.colors.border}`,
-          flexShrink: 0,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: theme.fonts.mono,
-            fontSize: '11px',
-            color: theme.colors.textSecondary,
-            letterSpacing: '1px',
-          }}
-        >
-          EXPLORER
-        </span>
-      </div>
-
       {/* Tree */}
       <div
         style={{
           flex: 1,
           overflow: 'auto',
-          padding: '8px 0',
+          padding: '12px 0',
         }}
       >
         {tree.map((node) => (
