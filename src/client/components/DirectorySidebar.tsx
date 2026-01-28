@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { FileNode } from '@shared/types';
 import { theme } from '../styles/theme';
+import { FileIcon, FolderIcon } from './FileIcon';
 
 interface DirectorySidebarProps {
   files: FileNode[];
@@ -125,14 +126,12 @@ function TreeItem({ node, depth, selectedPath, expandedPaths, onToggle, onSelect
         </span>
 
         {/* Folder/file icon */}
-        <span
-          style={{
-            marginRight: '8px',
-            fontSize: '14px',
-            flexShrink: 0,
-          }}
-        >
-          {node.isDirectory ? (isExpanded ? '📂' : '📁') : '📄'}
+        <span style={{ marginRight: '8px', display: 'flex', alignItems: 'center' }}>
+          {node.isDirectory ? (
+            <FolderIcon isOpen={isExpanded} size={16} />
+          ) : (
+            <FileIcon filename={node.name} size={16} />
+          )}
         </span>
 
         {/* Name */}
