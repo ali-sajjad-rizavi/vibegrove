@@ -5,6 +5,7 @@ import { FilePreview } from './components/FilePreview';
 import { ViewSwitcher, ViewType } from './components/ViewSwitcher';
 import { ZoomControls } from './components/ZoomControls';
 import { HelpBar } from './components/HelpBar';
+import { DirectorySidebar } from './components/DirectorySidebar';
 import { useWebSocket } from './hooks/useWebSocket';
 import { useCanvas } from './hooks/useCanvas';
 import type { FileNode, ImportEdge, ClaudeSession } from '@shared/types';
@@ -178,6 +179,13 @@ export default function App() {
           zoom={zoom}
           onZoomIn={zoomIn}
           onZoomOut={zoomOut}
+        />
+
+        {/* Directory Sidebar */}
+        <DirectorySidebar
+          files={files}
+          selectedFile={selectedFile}
+          onFileSelect={handleFileSelect}
         />
       </div>
 
