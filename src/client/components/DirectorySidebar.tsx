@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { FileNode } from '@shared/types';
 import { theme } from '../styles/theme';
 
@@ -184,6 +184,26 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
   });
 
   const tree = useMemo(() => buildFileTree(files), [files]);
+
+  // Auto-expand parent directories when a file is selected from the canvas
+  useEffect(() => {
+    if (selectedFile) {
+      const parts = selectedFile.path.split('/');
+      if (parts.length > 1) {
+        // Get all parent directory paths
+        const parentPaths: string[] = [];
+        for (let i = 1; i < parts.length; i++) {
+          parentPaths.push(parts.slice(0, i).join('/'));
+        }
+        // Expand all parents
+        setExpandedPaths((prev) => {
+          const next = new Set(prev);
+          parentPaths.forEach((p) => next.add(p));
+          return next;
+        });
+      }
+    }
+  }, [selectedFile]);
 
   const handleToggle = (path: string) => {
     setExpandedPaths((prev) => {
