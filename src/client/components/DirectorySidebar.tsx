@@ -221,9 +221,10 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
       style={{
         position: 'fixed',
         left: '16px',
-        top: '80px',
-        bottom: '60px',
+        top: '50%',
+        transform: 'translateY(-50%)',
         width: '240px',
+        maxHeight: 'calc(100vh - 160px)',
         background: theme.colors.surface,
         borderRadius: theme.radius.lg,
         border: `1px solid ${theme.colors.border}`,
@@ -237,7 +238,6 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
       {/* Tree */}
       <div
         style={{
-          flex: 1,
           overflow: 'auto',
           padding: '12px 0',
         }}
