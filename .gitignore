@@ -37,3 +37,7 @@ coverage/
 # Misc
 *.tgz
 .cache/
+
+# For keeping files/resources for
+# showing to Claude Code
+local-context/
