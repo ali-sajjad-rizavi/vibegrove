@@ -14,7 +14,7 @@ export function ZoomControls({ zoom, onZoomIn, onZoomOut }: ZoomControlsProps) {
       style={{
         position: 'absolute',
         bottom: '20px',
-        left: '272px',
+        left: '20px',
         display: 'flex',
         alignItems: 'center',
         gap: '8px',

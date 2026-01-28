@@ -221,10 +221,9 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
       style={{
         position: 'fixed',
         left: '16px',
-        top: '50%',
-        transform: 'translateY(-50%)',
+        top: '100px',
         width: '240px',
-        maxHeight: 'calc(100vh - 160px)',
+        maxHeight: 'calc(100vh - 200px)',
         background: theme.colors.surface,
         borderRadius: theme.radius.lg,
         border: `1px solid ${theme.colors.border}`,
