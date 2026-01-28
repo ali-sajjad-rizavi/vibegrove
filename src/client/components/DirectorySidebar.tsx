@@ -1,7 +1,11 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { FileNode } from '@shared/types';
 import { theme } from '../styles/theme';
 import { FileIcon, FolderIcon } from './FileIcon';
+
+const MIN_WIDTH = 180;
+const MAX_WIDTH = 500;
+const DEFAULT_WIDTH = 240;
 
 interface DirectorySidebarProps {
   files: FileNode[];
@@ -170,6 +174,33 @@ function TreeItem({ node, depth, selectedPath, expandedPaths, onToggle, onSelect
 }
 
 export function DirectorySidebar({ files, selectedFile, onFileSelect }: DirectorySidebarProps) {
+  const [width, setWidth] = useState(DEFAULT_WIDTH);
+  const [isResizing, setIsResizing] = useState(false);
+
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+
+    const startX = e.clientX;
+    const startWidth = width;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const delta = moveEvent.clientX - startX;
+      const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, startWidth + delta));
+      setWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [width]);
+
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(() => {
     // Start with top-level directories expanded
     const initial = new Set<string>();
@@ -222,7 +253,7 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
         position: 'fixed',
         left: '16px',
         top: '100px',
-        width: '240px',
+        width: `${width}px`,
         maxHeight: 'calc(100vh - 200px)',
         background: theme.colors.surface,
         borderRadius: theme.radius.lg,
@@ -232,6 +263,7 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
         flexDirection: 'column',
         zIndex: 100,
         overflow: 'hidden',
+        userSelect: isResizing ? 'none' : 'auto',
       }}
     >
       {/* Tree */}
@@ -253,6 +285,31 @@ export function DirectorySidebar({ files, selectedFile, onFileSelect }: Director
           />
         ))}
       </div>
+
+      {/* Resize handle */}
+      <div
+        onMouseDown={handleResizeStart}
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: '6px',
+          cursor: 'ew-resize',
+          background: isResizing ? theme.colors.accentLight : 'transparent',
+          transition: 'background 0.15s',
+        }}
+        onMouseEnter={(e) => {
+          if (!isResizing) {
+            (e.currentTarget as HTMLElement).style.background = theme.colors.border;
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!isResizing) {
+            (e.currentTarget as HTMLElement).style.background = 'transparent';
+          }
+        }}
+      />
     </div>
   );
 }
